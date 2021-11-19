@@ -1,10 +1,16 @@
 package ru.klimov.notes;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.nfc.cardemulation.CardEmulation;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,7 +30,18 @@ public class MainActivity extends AppCompatActivity {
        );
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        recyclerView.setAdapter();
+        NotesAdapter adapter = new NotesAdapter(noteList);
+        adapter.setClickListener((view, position) -> {
+            Toast.makeText(this, noteList.get(position).getContent(), Toast.LENGTH_SHORT).show();
+        });
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, LinearLayoutManager.VERTICAL);
+        dividerItemDecoration.setDrawable(AppCompatResources.getDrawable(this, R.drawable.separator));
+        recyclerView.addItemDecoration(dividerItemDecoration);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+
 
     }
 }
